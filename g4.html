@@ -84,7 +84,56 @@
   </section>
 
   <section class="block">
-    <div class="tag">4 · 변수 묶기</div>
+    <div class="tag">4 · 용어</div>
+    <h2>화면에 영어로 뜨는 것들</h2>
+    <p>결과 표는 영어로 나옵니다. <b>이름만 알면 되고, 뜻은 이미 아시는 것</b>입니다.</p>
+
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>화면에 뜨는 말</th><th>우리말</th><th>보는 법</th></tr>
+      <tr><td><code>Estimate</code></td><td>계수</td><td><b>하나 늘면 얼마 변하나.</b> 부호가 방향, 크기가 영향력</td></tr>
+      <tr><td><code>Std. Error</code></td><td>표준오차</td><td>그 계수가 얼마나 흔들리나. <b>보통은 안 봐도 됩니다</b></td></tr>
+      <tr><td><code>t value</code></td><td>t값</td><td>계수를 표준오차로 나눈 것. <b>p값이 이걸 대신 말해줍니다</b></td></tr>
+      <tr><td><code>Pr(&gt;|t|)</code></td><td><b>p값</b></td><td><b>0.05보다 작으면</b> 우연이 아니라고 봅니다</td></tr>
+      <tr><td><code>*</code> <code>**</code> <code>***</code></td><td>유의 표시</td><td>별이 많을수록 p값이 작다는 표시. <b>눈으로 빨리 찾을 때</b></td></tr>
+      <tr><td><code>Multiple R-squared</code></td><td><b>설명력 (R²)</b></td><td>0~1. <b>0.75면 75% 설명</b></td></tr>
+      <tr><td><code>Adjusted R-squared</code></td><td>수정 설명력</td><td>변수를 여러 개 넣었을 때는 <b>이쪽</b>을 씁니다</td></tr>
+      <tr><td><code>F-statistic</code></td><td>모형 전체 검정</td><td>모형이 통째로 의미 있나. 옆의 <b>p-value</b>만 보면 됩니다</td></tr>
+      <tr><td><code>Residuals</code></td><td>잔차</td><td>예측과 실제의 차이. <b>맨 위 줄, 지금은 넘어가셔도 됩니다</b></td></tr>
+    </table>
+    </div>
+
+    <div class="calm">
+      <div class="c-label">실제로 보는 건</div>
+      <h3>셋뿐입니다</h3>
+      <p><code>Pr(&gt;|t|)</code> → <code>Estimate</code> → <code>Adjusted R-squared</code></p>
+      <p>나머지는 <b>그 셋을 만들기 위한 중간 계산</b>이라 논문 표에 거의 안 들어갑니다.</p>
+    </div>
+
+    <h3>논문 문장으로 옮기면</h3>
+    <p>결과를 이런 틀에 끼우면 그대로 문장이 됩니다.</p>
+
+    <div class="try">
+      <div class="try-head"><span class="lbl">문장 틀</span><button class="copy-btn">복사</button></div>
+      <pre>(변수)는 (종속변수)에 유의한 영향을 미치는 것으로 나타났다
+(β = ____, p ____).
+(변수)가 1단위 증가할 때 (종속변수)는 ____ (증가/감소)하였다.
+본 모형의 설명력은 ____ 이다.</pre>
+    </div>
+
+    <p>앞의 예로 채우면 — <b>“차량 중량은 연비에 유의한 영향을 미쳤다(β = −5.34, p &lt; .001).
+    중량이 1단위 증가할 때 연비는 5.34 감소하였다. 모형의 설명력은 75.3%이다.”</b></p>
+
+    <div class="goldbox">
+      <div class="c-label">그대로 시켜도 됩니다</div>
+      <h3>표를 붙여넣고 문장을 받으세요</h3>
+      <p>결과 표를 통째로 붙여넣고 <b>“이 결과를 논문 문장으로 한 단락 써주세요”</b> 라고 하면 만들어 줍니다.</p>
+      <p>받은 문장의 <b>숫자가 표와 같은지만 대조</b>하시면 됩니다. 그게 확인의 전부예요.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="tag">5 · 변수 묶기</div>
     <h2>변수가 너무 많을 때</h2>
     <p>부동산 자료는 변수가 금방 수십 개가 됩니다. 면적·층수·연식·역거리·학군·세대수…</p>
     <p>그런데 이것들이 <b>서로 얽혀 있으면</b> 회귀 결과가 이상해집니다.
@@ -100,7 +149,7 @@
   </section>
 
   <section class="block">
-    <div class="tag">5 · 순서</div>
+    <div class="tag">6 · 순서</div>
     <h2>실제 분석 순서</h2>
     <ul>
       <li><b>1. 눈으로 보기</b> — 그래프부터. 이상한 값이 여기서 잡힙니다</li>
@@ -113,7 +162,7 @@
   </section>
 
   <section class="block">
-    <div class="tag">6 · 직접 해보기</div>
+    <div class="tag">7 · 직접 해보기</div>
     <h2>연습용 자료로<br>회귀까지</h2>
     <p>R에는 <b>연습용 자료가 들어 있습니다.</b> 자동차 32대의 연비·무게·마력 자료예요.
     받을 것도, 깔 것도 없습니다. <b>강의에서 교수님이 쓰신 것과 같은 자료</b>입니다.</p>
