@@ -114,13 +114,19 @@ $apps = @(
   @{ id='Git.Git';           label='Git';        cmd='git';  globs=@("$pf\Git\cmd\git.exe"); must=$true },
   @{ id='GitHub.cli';        label='GitHub CLI'; cmd='gh';   globs=@("$pf\GitHub CLI\gh.exe"); must=$true },
   @{ id='RProject.R';        label='R';          cmd=$null;  globs=@("$pf\R\R-*\bin\R.exe"); must=$true },
-  # RStudio 2022+ 는 실행 파일이 RStudio\bin\ 아래로 옮겨졌다.
-  # 8/29 실측: 옛 경로만 보다가 winget 이 코드 0(성공)을 줬는데도 '실패' 로 찍혔다.
+  # ⚠️ 강의(교안 2·3강)가 쓰는 도구는 RStudio 가 아니라 **Positron** 이다.
+  # 화면이 강의와 달라지면 학습자가 강의 중 질문을 못 하게 되므로 Positron 이 필수다.
+  # 8/29 실측: user scope 설치(관리자 불요), 바탕화면 아이콘은 설치가 안 만든다.
+  @{ id='Posit.Positron';    label='Positron';   cmd=$null;  globs=@(
+       "$env:LOCALAPPDATA\Programs\Positron\Positron.exe",
+       "$pf\Positron\Positron.exe"); must=$true },
+  # RStudio 는 남겨 둔다 — R 엔진을 공유하고 .Rproj 연결을 잡고 있어 무해하다.
+  # 다만 학습자 동선에서는 언급하지 않는다(문이 둘이면 첫 막힘 지점이 된다).
   @{ id='Posit.RStudio';     label='RStudio';    cmd=$null;  globs=@(
        "$pf\RStudio\bin\rstudio.exe","$pf\RStudio\rstudio.exe",
        "$pf86\RStudio\bin\rstudio.exe","$pf86\RStudio\rstudio.exe",
        "$env:LOCALAPPDATA\Programs\RStudio\rstudio.exe",
-       "$env:LOCALAPPDATA\Programs\RStudio\bin\rstudio.exe"); must=$true },
+       "$env:LOCALAPPDATA\Programs\RStudio\bin\rstudio.exe"); must=$false },
   @{ id='OpenJS.NodeJS.LTS'; label='Node.js';    cmd='node'; globs=@("$pf\nodejs\node.exe"); must=$true },
   # Rtools 는 소스 패키지를 직접 컴파일할 때만 필요하다.
   # 강의에서 쓰는 패키지는 대개 CRAN 이 미리 만들어 둔 것으로 충분하므로 실패해도 진행한다.
@@ -187,7 +193,7 @@ if (Test-Path (Join-Path $root '.git')) {
 }
 
 # -- 5. RStudio 초보 세팅 -------------------------------------
-Head '5. RStudio 세팅'
+Head '5. RStudio 세팅 (보조 — 학습자 동선 아님)'
 $prefDir  = Join-Path $env:APPDATA 'RStudio'
 $prefFile = Join-Path $prefDir 'rstudio-prefs.json'
 New-Item -ItemType Directory -Force -Path $prefDir | Out-Null
@@ -213,18 +219,24 @@ $json = $prefs | ConvertTo-Json -Depth 5
 Log 'RStudio 설정' 'OK' 'UTF-8 / 16pt / 세션복원 해제 / Terminal=Git Bash'
 
 # -- 6. 바탕화면 바로가기 -------------------------------------
+# Positron 은 VS Code 계열이라 .Rproj 가 아니라 **폴더(워크스페이스)** 를 연다.
+# 폴더를 인자로 물려 두면 더블클릭 한 번에 작업 폴더까지 열린다.
 Head '6. 바탕화면 바로가기'
-$rproj = Join-Path $root "$NAME.Rproj"
-if (Test-Path $rproj) {
-  $lnk = Join-Path ([Environment]::GetFolderPath('Desktop')) 'R 논문 작업.lnk'
+$posExe = $null
+foreach ($c in @("$env:LOCALAPPDATA\Programs\Positron\Positron.exe", "$pf\Positron\Positron.exe")) {
+  if (-not $posExe -and (Test-Path $c)) { $posExe = $c }
+}
+if ($posExe -and (Test-Path $root)) {
+  $lnk = Join-Path ([Environment]::GetFolderPath('Desktop')) 'R 논문 작업 (Positron).lnk'
   $sc  = (New-Object -ComObject WScript.Shell).CreateShortcut($lnk)
-  $sc.TargetPath       = $rproj
+  $sc.TargetPath       = $posExe
+  $sc.Arguments        = '"' + $root + '"'
   $sc.WorkingDirectory = $root
   $sc.Description      = 'R 할 때는 항상 이 아이콘으로 시작'
   $sc.Save()
-  Log '바로가기' 'OK' 'R 논문 작업'
+  Log '바로가기' 'OK' 'R 논문 작업 (Positron)'
 } else {
-  Log '바로가기' '보류' '.Rproj 없음 (리포 clone 실패)'
+  Log '바로가기' '보류' $(if ($posExe) { '리포 폴더 없음' } else { 'Positron 없음' })
 }
 
 # -- 7. GitHub 로그인 (대화형 1회) ----------------------------
@@ -267,7 +279,8 @@ foreach ($c in 'git','gh','node','npm','claude') {
 }
 $rexe = Get-Item "$pf\R\R-*\bin\R.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
 Write-Host ("  {0,-8} {1}" -f 'R', $(if ($rexe) { $rexe.FullName } else { '없음' }))
-$rs = Get-ChildItem "$pf\RStudio" -Recurse -Filter rstudio.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+Write-Host ("  {0,-8} {1}" -f 'Positron', $(if ($posExe) { $posExe } else { '없음' }))
+$rs = Get-ChildItem "$pf\RStudio","$env:LOCALAPPDATA\Programs\RStudio" -Recurse -Filter rstudio.exe -ErrorAction SilentlyContinue | Select-Object -First 1
 Write-Host ("  {0,-8} {1}" -f 'RStudio', $(if ($rs) { $rs.FullName } else { '없음' }))
 
 # 계정 정합 - 설치 위치와 실행 계정이 갈리면 자동 백업이 조용히 죽는다
@@ -290,8 +303,8 @@ if ($fail) {
 
   끝났습니다.
 
-  다음: 바탕화면 [R 논문 작업] 아이콘 -> RStudio 가 열립니다
-        Console 에 아래를 붙여넣고 엔터 (패키지 설치, 한 번만)
+  다음: 바탕화면 [R 논문 작업 (Positron)] 아이콘 -> Positron 이 열립니다
+        아래 패널의 Console 에 붙여넣고 엔터 (패키지 설치, 한 번만)
 
     source("10-논문/02-분석코드/00-setup.R")
 
