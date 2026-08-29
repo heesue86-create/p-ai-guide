@@ -119,6 +119,7 @@ $apps = @(
   @{ id='Posit.RStudio';     label='RStudio';    cmd=$null;  globs=@(
        "$pf\RStudio\bin\rstudio.exe","$pf\RStudio\rstudio.exe",
        "$pf86\RStudio\bin\rstudio.exe","$pf86\RStudio\rstudio.exe",
+       "$env:LOCALAPPDATA\Programs\RStudio\rstudio.exe",
        "$env:LOCALAPPDATA\Programs\RStudio\bin\rstudio.exe"); must=$true },
   @{ id='OpenJS.NodeJS.LTS'; label='Node.js';    cmd='node'; globs=@("$pf\nodejs\node.exe"); must=$true },
   # Rtools 는 소스 패키지를 직접 컴파일할 때만 필요하다.
