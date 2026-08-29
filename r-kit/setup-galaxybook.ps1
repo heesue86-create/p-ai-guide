@@ -54,14 +54,43 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
 }
 Log '사전점검' 'OK' "winget $((winget --version) 2>$null)"
 
-$isAdmin = ([Security.Principal.WindowsPrincipal] `
-  [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
-  [Security.Principal.WindowsBuiltInRole]::Administrator)
-if (-not $isAdmin) {
-  Write-Host "관리자 권한이 아닙니다. 설치 중 허용 창이 여러 번 뜹니다." -ForegroundColor Yellow
-  Write-Host "매번 [예]를 누르시면 됩니다." -ForegroundColor Yellow
+# 관리자 권한 - 지금 창을 다시 열지 말지 여기서 판정한다.
+# 핵심: "무조건 관리자로 실행" 은 정답이 아니다.
+#  · 이 계정이 관리자 그룹이면  -> 관리자로 다시 여는 게 낫다 (허용 창 1번으로 끝)
+#  · 이 계정이 일반 사용자면    -> 관리자로 열면 '다른 계정' 으로 갈아타게 되고,
+#    리포·GitHub 로그인·백업 스케줄이 전부 그 계정 아래 깔린다.
+#    엄마는 자기 계정으로 로그인하므로 설치는 성공한 척 끝나고 자동 백업만 조용히 안 돈다.
+$id      = [Security.Principal.WindowsIdentity]::GetCurrent()
+$isAdmin = ([Security.Principal.WindowsPrincipal]$id).IsInRole(
+             [Security.Principal.WindowsBuiltInRole]::Administrator)
+# 관리자 그룹 소속 여부 (승격 안 된 상태에서도 SID 로 보인다 - 'deny only' 로 들어 있음)
+$ADMIN_SID = 'S-1-5-32-544'
+$inAdminGroup = $false
+foreach ($g in $id.Groups) {
+  try { if ($g.Translate([Security.Principal.SecurityIdentifier]).Value -eq $ADMIN_SID) { $inAdminGroup = $true } } catch { }
 }
-Log '관리자권한' $(if ($isAdmin) { 'OK' } else { '아님' }) $(if ($isAdmin) { '' } else { 'UAC 창 반복 - 자동백업 등록에는 지장 없음(실측)' })
+
+if ($isAdmin) {
+  Log '관리자권한' '승격됨' '허용 창 없이 진행'
+} elseif ($inAdminGroup) {
+  Write-Host ""
+  Write-Host "  이 계정은 관리자입니다. 지금 창을 닫고 다시 여는 걸 권합니다." -ForegroundColor Yellow
+  Write-Host "  시작 버튼 우클릭 -> [터미널(관리자)] 또는 [Windows PowerShell(관리자)]" -ForegroundColor Yellow
+  Write-Host "  -> 허용 창이 1번만 뜨고 끝납니다. 그대로 진행하면 설치할 때마다 뜹니다." -ForegroundColor Yellow
+  Write-Host ""
+  Write-Host "  그냥 진행해도 됩니다. 매번 [예] 를 누르시면 결과는 같습니다." -ForegroundColor Gray
+  Write-Host ""
+  Log '관리자권한' '가능-미승격' '관리자로 다시 열면 허용 창 1회. 그냥 진행해도 결과 동일'
+} else {
+  Write-Host ""
+  Write-Host "  이 계정은 일반 사용자입니다. 설치할 때마다 허용 창이 뜹니다." -ForegroundColor Yellow
+  Write-Host "  [예] 만 뜨면 누르시면 됩니다." -ForegroundColor Yellow
+  Write-Host ""
+  Write-Host "  ⚠ 아이디·비밀번호를 입력하라고 나오면 창을 닫고 딸에게 알려주세요." -ForegroundColor Red
+  Write-Host "    다른 계정으로 설치되면 자동 백업이 안 돕니다." -ForegroundColor Red
+  Write-Host ""
+  Log '관리자권한' '일반사용자' '⚠ UAC 가 계정·비밀번호를 물으면 중단 - 다른 계정 설치 = 백업 무력화'
+}
 
 # -- 1. 작업 폴더 결정 (OneDrive 회피) ------------------------
 Head '1. 작업 폴더'
@@ -227,6 +256,18 @@ foreach ($c in 'git','gh','node','npm','claude') {
 }
 $rexe = Get-Item "$pf\R\R-*\bin\R.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
 Write-Host ("  {0,-8} {1}" -f 'R', $(if ($rexe) { $rexe.FullName } else { '없음' }))
+
+# 계정 정합 - 설치 위치와 실행 계정이 갈리면 자동 백업이 조용히 죽는다
+$pathUser = if ($root -match '(?i)^[A-Z]:\\Users\\([^\\]+)') { $Matches[1] } else { $null }
+if ($pathUser -and $pathUser -ne $env:USERNAME) {
+  Write-Host ""
+  Write-Host "  ⚠ 계정이 갈렸습니다" -ForegroundColor Red
+  Write-Host "     지금 실행 계정 : $env:USERNAME" -ForegroundColor Red
+  Write-Host "     설치된 폴더    : $root" -ForegroundColor Red
+  Write-Host "     이대로 두면 엄마가 로그인했을 때 자동 백업이 돌지 않습니다." -ForegroundColor Red
+  Write-Host "     이 화면을 캡처해서 딸에게 보내세요." -ForegroundColor Red
+  Write-Host ""
+}
 
 $fail = $report | Where-Object { $_.결과 -in '실패','중단','미완료' }
 if ($fail) {
