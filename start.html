@@ -4,352 +4,179 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-<meta name="googlebot" content="noindex, nofollow">
-<meta name="description" content="개인용 R 첫 화면 안내">
-<title>첫 화면 · 뭘 누르면 되나요</title>
-<style>
-  :root{
-    --bg:#ffffff; --ink:#0a0a0a; --ink-2:#2a2a2a; --ink-3:#6b6b6b; --line:#e8e8e8;
-    --accent:#4ECDC4; --accent-dark:#2BA99F; --accent-soft:#E8F8F6;
-    --bg-soft:#fafafa; --ng:#d64545; --ng-soft:#FDF0F0;
-  }
-  *{box-sizing:border-box;-webkit-font-smoothing:antialiased}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
-    font-family:"Apple SD Gothic Neo","Pretendard","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
-    font-size:20px;line-height:1.85;letter-spacing:-.2px}
-  a{color:inherit} img{max-width:100%}
-  .container{max-width:820px;margin:0 auto;padding:0 28px}
-
-  .topbar{border-bottom:1px solid var(--line);padding:22px 0;position:sticky;top:0;
-    background:rgba(255,255,255,.96);backdrop-filter:blur(10px);z-index:100}
-  .topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
-  .brand{font-size:14px;font-weight:800;letter-spacing:2px}
-  .brand .dot{display:inline-block;width:9px;height:9px;background:var(--accent);
-    border-radius:50%;margin-right:9px;vertical-align:middle}
-  .back{font-size:13px;font-weight:800;letter-spacing:1.5px;color:var(--ink-3);
-    text-decoration:none;border:1px solid var(--line);padding:11px 18px;white-space:nowrap}
-  .back:hover{border-color:var(--ink);color:var(--ink)}
-
-  .hero{padding:72px 0 52px}
-  .hero .kicker{font-size:13px;font-weight:800;letter-spacing:3px;color:var(--accent-dark);margin-bottom:24px}
-  .hero h1{font-size:52px;font-weight:800;line-height:1.15;letter-spacing:-1.6px;margin:0 0 24px}
-  .hero h1 em{font-style:normal;color:var(--accent)}
-  .hero .lead{font-size:21px;color:var(--ink-2);line-height:1.75;margin:0}
-  .hero .lead b{font-weight:700;color:var(--ink)}
-  @media (max-width:640px){.hero{padding:48px 0 36px}.hero h1{font-size:36px;letter-spacing:-.9px}.hero .lead{font-size:19px}}
-
-  .block{padding:0 0 56px}
-  .tag{font-size:12px;font-weight:800;letter-spacing:2.5px;color:var(--accent-dark);
-    padding-top:42px;border-top:1px solid var(--line);margin-bottom:14px}
-  h2{font-size:33px;font-weight:800;letter-spacing:-1px;line-height:1.25;margin:0 0 18px}
-  h3{font-size:23px;font-weight:800;letter-spacing:-.4px;margin:38px 0 12px}
-  @media (max-width:640px){h2{font-size:26px}h3{font-size:21px}}
-  p{margin:12px 0;color:var(--ink-2);font-size:19px;line-height:1.85}
-  p b{color:var(--ink);font-weight:800}
-  ul{padding-left:22px;margin:14px 0;color:var(--ink-2)}
-  li{margin:10px 0;font-size:18px;line-height:1.8}
-  li b{color:var(--ink)}
-  code{font-family:"D2Coding","JetBrains Mono","Consolas",monospace;
-    font-size:16px;background:var(--bg-soft);padding:3px 8px;border:1px solid var(--line)}
-  .key{display:inline-block;font-family:inherit;font-size:15px;font-weight:800;
-    border:2px solid var(--ink);border-bottom-width:4px;padding:3px 12px;
-    background:#fff;letter-spacing:0;margin:0 2px}
-
-  /* 화면 4분할 그림 */
-  .screen{border:2px solid var(--ink);margin:26px 0 10px;background:#fff}
-  .screen-bar{background:var(--ink);color:#fff;font-size:12px;font-weight:800;
-    letter-spacing:2px;padding:9px 16px}
-  .panes{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto}
-  .pane{padding:22px 20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:104px}
-  .pane:nth-child(2n){border-right:0}
-  .pane:nth-child(n+3){border-bottom:0}
-  .pane .n{display:inline-block;background:var(--accent);color:#fff;font-size:13px;
-    font-weight:800;width:26px;height:26px;line-height:26px;text-align:center;margin-bottom:9px}
-  .pane .t{font-size:19px;font-weight:800;letter-spacing:-.3px;margin-bottom:4px}
-  .pane .d{font-size:16px;color:var(--ink-3);line-height:1.6}
-  .pane.hot{background:var(--accent-soft)}
-  .pane.hot .d{color:var(--ink-2)}
-  @media (max-width:640px){.panes{grid-template-columns:1fr}
-    .pane{border-right:0!important;border-bottom:1px solid var(--line)!important}
-    .pane:last-child{border-bottom:0!important}}
-
-  .try{border:1px solid var(--line);margin:20px 0 12px;background:#fff}
-  .try-head{display:flex;justify-content:space-between;align-items:center;gap:14px;
-    padding:13px 20px;border-bottom:1px solid var(--line);background:var(--bg-soft)}
-  .try-head .lbl{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--ink-3)}
-  .copy-btn{background:var(--accent);color:#fff;border:0;font-size:13px;font-weight:800;
-    letter-spacing:1.5px;padding:9px 16px;cursor:pointer;font-family:inherit;flex-shrink:0}
-  .copy-btn:hover{background:var(--accent-dark)}
-  .copy-btn.ok{background:var(--ink)}
-  .try pre{margin:0;padding:20px;white-space:pre-wrap;word-break:break-word;
-    font-family:"D2Coding","JetBrains Mono","Consolas",monospace;
-    font-size:17px;line-height:1.75;color:var(--ink)}
-  .out{border-top:1px dashed var(--line);padding:14px 20px;background:var(--bg-soft);
-    font-family:"D2Coding","JetBrains Mono","Consolas",monospace;font-size:16px;color:var(--ink-2)}
-  .out .cap{font-family:inherit;font-size:12px;font-weight:800;letter-spacing:2px;
-    color:var(--ink-3);display:block;margin-bottom:6px}
-
-  .calm{border:2px solid var(--accent);background:var(--accent-soft);padding:28px 30px;margin:24px 0}
-  .calm .c-label{font-size:12px;font-weight:800;letter-spacing:2.5px;color:var(--accent-dark);margin-bottom:11px}
-  .calm h3{margin:0 0 10px;font-size:23px}
-  .calm p{font-size:18px;color:var(--ink);margin:9px 0}
-
-  .redbox{border:2px solid var(--ng);background:var(--ng-soft);padding:28px 30px;margin:24px 0}
-  .redbox .c-label{font-size:12px;font-weight:800;letter-spacing:2.5px;color:var(--ng);margin-bottom:11px}
-  .redbox h3{margin:0 0 10px;font-size:23px}
-  .redbox p{font-size:18px;color:var(--ink);margin:9px 0}
-
-  table{width:100%;border-collapse:collapse;margin:20px 0 26px;font-size:17px}
-  th,td{padding:15px 14px;border-bottom:1px solid var(--line);text-align:left;line-height:1.7;vertical-align:top}
-  tr:first-child th{border-top:2px solid var(--ink)}
-  th{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--ink-3)}
-  td{font-size:17px} td b{color:var(--ink);font-weight:800}
-  .tbl-wrap{overflow-x:auto}
-
-  .cta{text-align:center;padding:54px 20px 70px;border-top:1px solid var(--line);margin-top:16px}
-  .cta .cta-title{font-size:27px;font-weight:800;letter-spacing:-.6px;margin:0 0 10px;line-height:1.35}
-  .cta .cta-desc{font-size:17px;color:var(--ink-3);margin-bottom:30px;line-height:1.7}
-  .more{display:inline-block;text-decoration:none;border:2px solid var(--ink);
-    padding:17px 38px;font-weight:800;font-size:18px;box-shadow:5px 5px 0 var(--ink)}
-  .more:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--ink);background:var(--accent-soft)}
-  .note{margin-top:24px;font-size:15px;color:var(--ink-3);line-height:1.75}
-  .footer{padding:48px 0 68px;border-top:1px solid var(--line);color:var(--ink-3);
-    font-size:13px;letter-spacing:1px;text-align:center}
-  .footer .line{font-weight:800;color:var(--ink);letter-spacing:2px;margin-bottom:8px;font-size:14px}
-</style>
+<meta name="description" content="개인용 수업 안내">
+<title>전체 지도 · 지금 뭘 배우는 건가요</title>
+<link rel="stylesheet" href="./guide.css">
 </head>
 <body>
 
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <div class="brand"><span class="dot"></span>첫 화면</div>
-      <a class="back" href="./r.html">전체 안내 →</a>
-    </div>
-  </header>
+<header class="topbar">
+  <div class="container topbar-inner">
+    <div class="brand"><span class="dot"></span>전체 지도</div>
+    <a class="back" href="./r.html">막혔을 때 →</a>
+  </div>
+</header>
 
-  <section class="hero">
-    <div class="container">
-      <div class="kicker">START HERE</div>
-      <h1>바탕화면 아이콘을<br>눌렀어요.<br><em>이제 뭘 하죠?</em></h1>
-      <p class="lead">화면이 여러 칸으로 나뉘어 있어서 복잡해 보이지만,<br>
-      <b>실제로 손대는 곳은 한 곳뿐</b>이에요.</p>
+<section class="hero">
+  <div class="container">
+    <div class="kicker">START HERE</div>
+    <h1>지금 배우는 게<br><em>뭔지</em>부터.</h1>
+    <p class="lead">강의를 다 들으셨는데도 뿌옇다면 정상입니다.<br>
+    <b>부품을 하나씩 배웠고, 조립도를 아직 안 봤을 뿐</b>입니다.</p>
+  </div>
+</section>
+
+<div class="container">
+
+  <!-- 1. 도구 3층 -->
+  <section class="block">
+    <div class="tag">1 · 도구</div>
+    <h2>프로그램이 셋인데<br>하는 일이 다 달라요</h2>
+    <p>이름이 낯설어서 어려워 보이지, <b>역할은 아주 단순합니다.</b></p>
+
+    <div class="stack">
+      <div class="layer">
+        <div class="ico">작업대</div>
+        <div class="body">
+          <h4>Positron (포지트론)</h4>
+          <p>글씨를 쓰고, 실행 버튼을 누르고, 결과를 보는 <b>화면</b>입니다.</p>
+          <p>한글이나 워드 같은 겁니다. 여기가 책상이에요.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="ico">계산기</div>
+        <div class="body">
+          <h4>R (알)</h4>
+          <p><b>통계 전용 계산기</b>입니다. 평균·상관·회귀 같은 걸 실제로 계산하는 건 이 친구예요.</p>
+          <p>혼자서는 화면이 없어서, 위의 작업대에 올려두고 씁니다.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="ico">도우미</div>
+        <div class="body">
+          <h4>AI (코파일럿 · 클로드)</h4>
+          <p>뭘 어떻게 써야 할지 <b>대신 생각해주는 사람</b>입니다.</p>
+          <p>이번 수업이 특별한 게 이겁니다 — <b>다 외워서 치는 게 아니라, 시키고 확인합니다.</b></p>
+        </div>
+      </div>
+    </div>
+
+    <p>정리하면 — <b>작업대(Positron) 위에 계산기(R)를 올려두고, 옆에 도우미(AI)를 앉힌다.</b> 그게 전부입니다.</p>
+  </section>
+
+  <!-- 2. SPSS와 뭐가 다른가 -->
+  <section class="block">
+    <div class="tag">2 · 왜 굳이</div>
+    <h2>클릭하면 되는 걸<br>왜 글자로 쓰나요</h2>
+    <p>통계 프로그램을 써보셨다면 <b>메뉴에서 클릭 → 결과</b>가 익숙하실 거예요.
+    R은 같은 일을 <b>글자로 적어서</b> 시킵니다. 번거로워 보이는데, 이유가 하나 있습니다.</p>
+
+    <div class="tbl-wrap">
+    <table>
+      <tr><th></th><th>클릭 방식</th><th>글자로 쓰는 방식 (R)</th></tr>
+      <tr><td><b>하는 법</b></td><td>메뉴에서 골라 누름</td><td>줄을 적고 실행</td></tr>
+      <tr><td><b>결과</b></td><td>같음</td><td>같음</td></tr>
+      <tr><td><b>남는 것</b></td><td>결과 숫자만</td><td><b>어떻게 나왔는지가 통째로</b></td></tr>
+      <tr><td><b>다시 할 때</b></td><td>기억을 더듬어 다시 클릭</td><td><b>그 줄을 또 실행하면 끝</b></td></tr>
+    </table>
+    </div>
+
+    <div class="goldbox">
+      <div class="c-label">핵심</div>
+      <h3>논문 심사에서 물어보는 게 이겁니다</h3>
+      <p>“이 숫자, 어떻게 나온 겁니까.”</p>
+      <p>클릭으로 한 건 <b>말로 설명</b>해야 하고, 글자로 쓴 건 <b>그 줄을 보여주면</b> 끝납니다.
+      데이터가 바뀌어도 다시 실행만 하면 되고요.</p>
+      <p><b>번거로운 게 아니라, 나중에 편하려고 지금 적어두는 겁니다.</b></p>
     </div>
   </section>
 
-  <div class="container">
+  <!-- 3. 목적지 -->
+  <section class="block">
+    <div class="tag">3 · 목적지</div>
+    <h2>결국 뭐가<br>나오는 건가요</h2>
+    <p><b>문서 한 개</b>가 나옵니다. 그 안에 글·표·그래프가 다 들어 있고,
+    숫자는 손으로 옮겨 적은 게 아니라 <b>계산한 결과가 그 자리에 박혀 있는</b> 문서요.</p>
+    <p>그게 6강에서 배우는 <b>Quarto(쿼토)</b>입니다. 여기가 도착점이에요.</p>
 
-    <!-- 화면 구경 -->
-    <section class="block">
-      <div class="tag">1 · 화면 구경</div>
-      <h2>칸이 네 개예요</h2>
-      <p>이렇게 생겼습니다. 이름은 몰라도 되고, <b>어느 칸이 뭐 하는 곳인지만</b> 알면 됩니다.</p>
-
-      <div class="screen">
-        <div class="screen-bar">R 논문 작업</div>
-        <div class="panes">
-          <div class="pane">
-            <span class="n">2</span>
-            <div class="t">공책</div>
-            <div class="d">적어두는 곳.<br>여기 쓴 건 저장돼서 나중에 다시 볼 수 있어요.</div>
-          </div>
-          <div class="pane">
-            <span class="n">3</span>
-            <div class="t">만들어둔 것 목록</div>
-            <div class="d">이름 붙여 저장한 게 여기 하나씩 쌓여요.<br>구경만 하시면 됩니다.</div>
-          </div>
-          <div class="pane hot">
-            <span class="n">1</span>
-            <div class="t">말 거는 곳 (Console)</div>
-            <div class="d"><b>여기만 쓰시면 됩니다.</b><br>치고 엔터 누르면 바로 답이 나와요. 계산기라고 생각하세요.</div>
-          </div>
-          <div class="pane">
-            <span class="n">4</span>
-            <div class="t">그림·파일 서랍</div>
-            <div class="d">그래프가 여기 그려지고,<br>폴더 안 파일도 여기서 보여요.</div>
-          </div>
-        </div>
-      </div>
-      <p><b>처음 열면 왼쪽이 통째로 하나예요.</b> 그게 1번(말 거는 곳)입니다.
-      나중에 공책 파일을 열면 그때 위아래로 갈라져요. 놀라지 마세요.</p>
-
-      <div class="calm">
-        <div class="c-label">딱 하나만</div>
-        <h3>왼쪽 아래에 커서를 두세요</h3>
-        <p>거기가 <b>말 거는 곳</b>이에요. <code>&gt;</code> 표시가 깜빡이고 있으면 준비된 상태입니다.</p>
-        <p>다른 칸은 지금 안 건드려도 됩니다.</p>
-      </div>
-    </section>
-
-    <!-- 바로 해보기 -->
-    <section class="block">
-      <div class="tag">2 · 바로 해보기</div>
-      <h2>네 개만<br>따라 쳐보세요</h2>
-      <p>읽지 말고 <b>진짜로 쳐보세요.</b> 5분이면 끝나고, 이거 하고 나면 감이 옵니다.
-      복사 버튼을 눌러 붙여넣으셔도 돼요.</p>
-
-      <h3>① 계산기처럼</h3>
-      <div class="try">
-        <div class="try-head"><span class="lbl">말 거는 곳에 치고 엔터</span><button class="copy-btn">복사</button></div>
-        <pre>1 + 1</pre>
-        <div class="out"><span class="cap">이렇게 나와요</span>[1] 2</div>
-      </div>
-      <p>앞에 붙은 <code>[1]</code> 은 "첫 번째 답"이라는 표시예요. <b>무시하셔도 됩니다.</b></p>
-
-      <h3>② 평균 내보기</h3>
-      <div class="try">
-        <div class="try-head"><span class="lbl">말 거는 곳에 치고 엔터</span><button class="copy-btn">복사</button></div>
-        <pre>mean(c(3, 5, 10))</pre>
-        <div class="out"><span class="cap">이렇게 나와요</span>[1] 6</div>
-      </div>
-      <p><code>mean</code> 은 평균, <code>c(...)</code> 는 "숫자들을 하나로 묶어라"는 뜻이에요.
-      논문에서 평균 낼 때 쓰는 게 딱 이겁니다. 벌써 하나 하신 거예요.</p>
-
-      <h3>③ 이름 붙여두기</h3>
-      <div class="try">
-        <div class="try-head"><span class="lbl">한 줄씩, 각각 엔터</span><button class="copy-btn">복사</button></div>
-        <pre>가격 &lt;- 500
-가격 * 3</pre>
-        <div class="out"><span class="cap">이렇게 나와요</span>(첫 줄은 아무것도 안 나옴)<br>[1] 1500</div>
-      </div>
-      <p><code>&lt;-</code> 는 <b>"이 이름으로 저장해둬"</b>라는 뜻이에요. 화살표처럼 생겼죠.</p>
-      <p><b>첫 줄에서 아무것도 안 나오는 게 정상입니다.</b> 고장 아니에요.
-      대신 <b>오른쪽 위 칸(3번)</b>을 보세요. <code>가격</code> 이 생겨 있을 거예요. 그게 저장됐다는 표시입니다.</p>
-
-      <h3>④ 그림 그려보기</h3>
-      <div class="try">
-        <div class="try-head"><span class="lbl">말 거는 곳에 치고 엔터</span><button class="copy-btn">복사</button></div>
-        <pre>plot(1:10)</pre>
-        <div class="out"><span class="cap">이렇게 나와요</span>오른쪽 아래 칸(4번)에 점 열 개짜리 그래프</div>
-      </div>
-      <p>논문에 들어갈 그래프도 이렇게 나옵니다. <b>여기까지 하셨으면 오늘은 충분해요.</b></p>
-    </section>
-
-    <!-- 조작 -->
-    <section class="block">
-      <div class="tag">3 · 알아두면 편한 것</div>
-      <h2>키 세 개</h2>
-      <div class="tbl-wrap">
-      <table>
-        <tr><th>키</th><th>언제</th><th>무슨 일이</th></tr>
-        <tr>
-          <td><span class="key">↑</span></td>
-          <td>방금 친 걸 또 치기 귀찮을 때</td>
-          <td><b>아까 쳤던 게 그대로 다시 나와요.</b> 여러 번 누르면 더 옛날 것까지. 오타 하나 고칠 때 제일 편합니다</td>
-        </tr>
-        <tr>
-          <td><span class="key">Esc</span></td>
-          <td>화면이 이상해져서 멈춘 것 같을 때</td>
-          <td><b>하던 걸 취소하고 처음으로 돌아와요.</b> 막히면 일단 이거</td>
-        </tr>
-        <tr>
-          <td><span class="key">Tab</span></td>
-          <td>회색 글씨가 미리 떠올랐을 때</td>
-          <td>그 글씨를 받아써요. <b>맘에 안 들면 그냥 무시하고 계속 치시면 됩니다</b></td>
-        </tr>
-      </table>
-      </div>
-
-      <div class="calm">
-        <div class="c-label">자주 겪는 것</div>
-        <h3>엔터를 쳤는데 <code>+</code> 만 나오고 답이 안 나와요</h3>
-        <p>따옴표나 괄호를 <b>안 닫아서</b> 컴퓨터가 "아직 안 끝났나 보다" 하고 기다리는 중이에요.</p>
-        <p><span class="key">Esc</span> 를 누르면 빠져나옵니다. 그리고 다시 치세요. <b>흔한 일이에요.</b></p>
-      </div>
-    </section>
-
-    <!-- 오류 -->
-    <section class="block">
-      <div class="tag">4 · 빨간 글씨</div>
-      <h2>겁먹지 마세요</h2>
-
-      <div class="redbox">
-        <div class="c-label">먼저 알아두실 것</div>
-        <h3>빨간 글씨가 떠도 아무것도 안 망가집니다</h3>
-        <p>컴퓨터가 화난 게 아니라 <b>"방금 그 말을 못 알아들었어요"</b> 하고 알려주는 거예요.</p>
-        <p>고장 난 것도 아니고, 되돌릴 것도 없습니다. <b>그냥 다시 치면 됩니다.</b></p>
-      </div>
-
-      <p>처음 한 달은 빨간 글씨가 제일 많이 보입니다. <b>그게 정상이에요.</b>
-      다들 그렇게 배웁니다. 하나 넘길 때마다 실력이 느는 겁니다.</p>
-
-      <h3>두 종류가 있어요</h3>
-      <div class="tbl-wrap">
-      <table>
-        <tr><th>글씨</th><th>뜻</th><th>어떻게</th></tr>
-        <tr><td><b>Error</b></td><td>못 알아들어서 <b>멈췄어요</b></td><td>고쳐야 다음으로 갑니다</td></tr>
-        <tr><td><b>Warning</b></td><td>"이건 좀 이상한데" 하면서 <b>그냥 했어요</b></td><td>대개 그대로 두셔도 됩니다</td></tr>
-      </table>
-      </div>
-      <p><b>Warning은 실패가 아닙니다.</b> 이거 하나만 알아도 놀랄 일이 절반으로 줄어요.</p>
-
-      <h3>제일 흔한 세 가지</h3>
-      <ul>
-        <li><b>오타</b> — <code>mean</code> 을 <code>maen</code> 으로. 대소문자도 구분해요</li>
-        <li><b>따옴표·괄호를 안 닫음</b> — 위에서 본 <code>+</code> 상황</li>
-        <li><b>파일을 못 찾겠대요</b> — 이건 거의 항상 <b>아이콘을 잘못 눌러 연 것</b>이에요.
-        창을 닫고 바탕화면 <b>R 논문 작업</b> 으로 다시 여세요</li>
-      </ul>
-    </section>
-
-    <!-- 클로드 -->
-    <section class="block">
-      <div class="tag">5 · 막히면</div>
-      <h2>빨간 글씨를<br>통째로 보여주세요</h2>
-      <p>브라우저나 앱에서 클로드를 열고, <b>빨간 글씨를 마우스로 긁어서 그대로</b> 붙여넣으세요.
-      요약하거나 옮겨 적으면 원인이 달라집니다.</p>
-
-      <div class="try">
-        <div class="try-head"><span class="lbl">이렇게 물어보시면 돼요</span><button class="copy-btn">복사</button></div>
-        <pre>R에서 이런 게 떴어요. 무슨 뜻이고 어디를 고치면 되는지
-쉽게 알려주세요.
-
-(빨간 글씨 붙여넣기)</pre>
-      </div>
-
-      <ul>
-        <li>한 번에 여러 개를 알려주면 <b>"첫 번째 것만 자세히"</b> 라고 다시 물어보세요</li>
-        <li>고친 다음에는 <b>화면에 뭐가 나왔는지 다시 보여주세요.</b> 그래야 다음 단계가 맞습니다</li>
-        <li><b>30분 넘게 혼자 붙잡지 마세요.</b> 화면 캡처해서 딸에게 보내시면 됩니다</li>
-      </ul>
-
-      <div class="calm">
-        <div class="c-label">한 가지만</div>
-        <h3>클로드가 알려준 숫자는 논문에 쓰지 마세요</h3>
-        <p>계산은 <b>직접 R을 돌려서</b> 나온 숫자만 씁니다.
-        클로드에게는 <b>나온 결과를 보여주고 "이게 무슨 뜻이냐"고 해석만</b> 물어보세요.</p>
-      </div>
-    </section>
-
-  </div>
-
-  <div class="container">
-    <div class="cta">
-      <div class="cta-title">오늘은 여기까지면 충분해요</div>
-      <p class="cta-desc">네 줄 쳐보고, 빨간 글씨 한 번 보고 넘겼으면 그게 오늘 진도입니다</p>
-      <a class="more" href="./r.html">전체 안내 보기 →</a>
-      <p class="note">저장은 신경 안 쓰셔도 됩니다.<br>하루 세 번 알아서 저장되고 있어요.</p>
+    <div class="calm">
+      <div class="c-label">왜 이게 다른가</div>
+      <h3>숫자를 손으로 옮기지 않습니다</h3>
+      <p>보통은 통계 프로그램에서 결과를 보고, 한글 문서에 <b>손으로 옮겨 적습니다.</b>
+      그러다 데이터가 하나 바뀌면 표 전체를 다시 고쳐야 하고, 어딘가 하나는 꼭 안 고쳐집니다.</p>
+      <p>Quarto는 문서 안에 계산이 들어 있어서 <b>다시 돌리면 표가 알아서 바뀝니다.</b>
+      옮겨 적다 생기는 실수가 아예 없습니다.</p>
     </div>
-  </div>
 
-  <footer class="footer">
-    <div class="container">
-      <div class="line">R GUIDE</div>
-      <div>개인용 · 검색 노출 없음</div>
+    <p><b>1강부터 5강까지는 전부 이 문서 한 장을 만들기 위한 준비</b>입니다.
+    그걸 모르고 들으면 “이걸 어디다 쓰지”가 계속 남습니다.</p>
+  </section>
+
+  <!-- 4. 6강 지도 -->
+  <section class="block">
+    <div class="tag">4 · 지도</div>
+    <h2>6강이<br>어디로 가는지</h2>
+    <p>순서대로 눌러보세요. 한 장에 한 강씩, <b>개념만</b> 있습니다.
+    실제 코드는 교수님이 강의에서 주시는 걸 쓰시면 됩니다.</p>
+
+    <div class="map">
+      <a class="mrow" href="./g1.html">
+        <div class="num">1강</div>
+        <div><p class="t">AI를 왜 쓰나</p><p class="d">도구로서의 AI · 어디까지 맡기고 어디부터 내가 하나</p></div>
+      </a>
+      <a class="mrow" href="./g2.html">
+        <div class="num">2강</div>
+        <div><p class="t">바이브 코딩</p><p class="d">외워서 치는 게 아니라 시키고 확인하는 방식 · 코파일럿과 클로드의 역할 분담</p></div>
+      </a>
+      <a class="mrow" href="./g3.html">
+        <div class="num">3강</div>
+        <div><p class="t">Positron 화면 · 터미널</p><p class="d">어느 칸이 뭐 하는 곳인지 · <b>터미널이 뭔지</b></p></div>
+      </a>
+      <a class="mrow" href="./g4.html">
+        <div class="num">4강</div>
+        <div><p class="t">통계</p><p class="d">상관 · 회귀 · 변수 묶기 · <b>결과에서 어느 숫자를 보나</b></p></div>
+      </a>
+      <a class="mrow" href="./g5.html">
+        <div class="num">5강</div>
+        <div><p class="t">데이터 가져오기</p><p class="d">부동산 실거래가를 어디서 어떻게 · <b>API가 뭔지</b></p></div>
+      </a>
+      <a class="mrow goal" href="./g6.html">
+        <div class="num">6강</div>
+        <div><p class="t">Quarto — 도착점</p><p class="d"><b>논문 문서 그 자체.</b> 앞의 다섯 강이 전부 여기로 모입니다</p></div>
+      </a>
     </div>
-  </footer>
 
-<script>
-document.querySelectorAll('.copy-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const pre=btn.closest('.try').querySelector('pre');
-    navigator.clipboard.writeText(pre.innerText).then(()=>{
-      const old=btn.textContent;
-      btn.textContent='복사됨 ✓';
-      btn.classList.add('ok');
-      setTimeout(()=>{btn.textContent=old;btn.classList.remove('ok')},1400);
-    });
-  });
-});
-</script>
+    <p><b>급하면 6강부터 보셔도 됩니다.</b> 목적지를 먼저 보면 나머지가 왜 필요한지 알게 되거든요.</p>
+  </section>
+
+  <!-- 5. 안심 -->
+  <section class="block">
+    <div class="tag">5 · 미리</div>
+    <h2>세 가지만<br>기억하세요</h2>
+
+    <div class="redbox">
+      <div class="c-label">MUST</div>
+      <h3>이건 꼭</h3>
+      <p><b>1. 빨간 글씨가 떠도 아무것도 안 망가집니다.</b>
+      “못 알아들었어요”라는 말일 뿐이에요. 그냥 다시 하면 됩니다.</p>
+      <p><b>2. AI가 알려준 숫자는 논문에 쓰지 않습니다.</b>
+      직접 돌려서 나온 것만요. AI에게는 <b>나온 결과를 보여주고 해석만</b> 물어보세요.</p>
+      <p><b>3. 30분 넘게 혼자 붙잡지 마세요.</b> 화면 캡처해서 딸에게 보내시면 됩니다.</p>
+    </div>
+
+    <p>저장은 신경 안 쓰셔도 됩니다. <b>하루 세 번 자동으로 되고 있어요.</b></p>
+  </section>
+
+  <div class="nav">
+    <a class="next" href="./g1.html"><span class="lbl">다음</span>1강 · AI를 왜 쓰나 →</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="line">R GUIDE</div>
+    <div>개인용 · 검색 노출 없음</div>
+  </div>
+</footer>
 </body>
 </html>

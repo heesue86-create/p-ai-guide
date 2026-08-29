@@ -1,0 +1,106 @@
+/* 부동산 AI 수업 가이드 — 공용 스타일 (7장 공유) */
+:root{
+  --bg:#ffffff; --ink:#0a0a0a; --ink-2:#2a2a2a; --ink-3:#6b6b6b; --line:#e8e8e8;
+  --accent:#4ECDC4; --accent-dark:#2BA99F; --accent-soft:#E8F8F6;
+  --bg-soft:#fafafa; --ng:#d64545; --ng-soft:#FDF0F0;
+  --gold:#B38600; --gold-soft:#FFF8E1;
+}
+*{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:"Apple SD Gothic Neo","Pretendard","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  font-size:20px;line-height:1.85;letter-spacing:-.2px}
+a{color:inherit} img{max-width:100%}
+.container{max-width:860px;margin:0 auto;padding:0 28px}
+
+.topbar{border-bottom:1px solid var(--line);padding:20px 0;position:sticky;top:0;
+  background:rgba(255,255,255,.96);backdrop-filter:blur(10px);z-index:100}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{font-size:14px;font-weight:800;letter-spacing:2px}
+.brand .dot{display:inline-block;width:9px;height:9px;background:var(--accent);
+  border-radius:50%;margin-right:9px;vertical-align:middle}
+.back{font-size:13px;font-weight:800;letter-spacing:1.5px;color:var(--ink-3);
+  text-decoration:none;border:1px solid var(--line);padding:10px 16px;white-space:nowrap}
+.back:hover{border-color:var(--ink);color:var(--ink)}
+
+.hero{padding:68px 0 48px}
+.hero .kicker{font-size:13px;font-weight:800;letter-spacing:3px;color:var(--accent-dark);margin-bottom:22px}
+.hero h1{font-size:50px;font-weight:800;line-height:1.16;letter-spacing:-1.6px;margin:0 0 22px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .lead{font-size:21px;color:var(--ink-2);line-height:1.75;margin:0}
+.hero .lead b{font-weight:700;color:var(--ink)}
+@media (max-width:640px){.hero{padding:44px 0 34px}.hero h1{font-size:34px;letter-spacing:-.9px}.hero .lead{font-size:19px}}
+
+.block{padding:0 0 52px}
+.tag{font-size:12px;font-weight:800;letter-spacing:2.5px;color:var(--accent-dark);
+  padding-top:40px;border-top:1px solid var(--line);margin-bottom:13px}
+h2{font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1.25;margin:0 0 16px}
+h3{font-size:22px;font-weight:800;letter-spacing:-.4px;margin:34px 0 10px}
+@media (max-width:640px){h2{font-size:25px}h3{font-size:20px}}
+p{margin:12px 0;color:var(--ink-2);font-size:19px;line-height:1.85}
+p b{color:var(--ink);font-weight:800}
+ul,ol{padding-left:22px;margin:14px 0;color:var(--ink-2)}
+li{margin:9px 0;font-size:18px;line-height:1.8}
+li b{color:var(--ink)}
+code{font-family:"D2Coding","JetBrains Mono","Consolas",monospace;
+  font-size:16px;background:var(--bg-soft);padding:3px 8px;border:1px solid var(--line)}
+.key{display:inline-block;font-size:15px;font-weight:800;border:2px solid var(--ink);
+  border-bottom-width:4px;padding:3px 12px;background:#fff;margin:0 2px}
+
+table{width:100%;border-collapse:collapse;margin:20px 0 26px;font-size:17px}
+th,td{padding:15px 14px;border-bottom:1px solid var(--line);text-align:left;line-height:1.7;vertical-align:top}
+tr:first-child th{border-top:2px solid var(--ink)}
+th{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--ink-3)}
+td{font-size:17px} td b{color:var(--ink);font-weight:800}
+.tbl-wrap{overflow-x:auto}
+
+.calm{border:2px solid var(--accent);background:var(--accent-soft);padding:28px 30px;margin:24px 0}
+.calm .c-label{font-size:12px;font-weight:800;letter-spacing:2.5px;color:var(--accent-dark);margin-bottom:11px}
+.calm h3{margin:0 0 10px;font-size:22px}
+.calm p{font-size:18px;color:var(--ink);margin:9px 0}
+
+.redbox{border:2px solid var(--ng);background:var(--ng-soft);padding:28px 30px;margin:24px 0}
+.redbox .c-label{font-size:12px;font-weight:800;letter-spacing:2.5px;color:var(--ng);margin-bottom:11px}
+.redbox h3{margin:0 0 10px;font-size:22px}
+.redbox p{font-size:18px;color:var(--ink);margin:9px 0}
+
+.goldbox{border:2px solid var(--gold);background:var(--gold-soft);padding:28px 30px;margin:24px 0}
+.goldbox .c-label{font-size:12px;font-weight:800;letter-spacing:2.5px;color:var(--gold);margin-bottom:11px}
+.goldbox h3{margin:0 0 10px;font-size:22px}
+.goldbox p{font-size:18px;color:var(--ink);margin:9px 0}
+
+/* 3층 구조도 */
+.stack{border:2px solid var(--ink);margin:26px 0 10px}
+.layer{padding:22px 26px;border-bottom:1px solid var(--line);display:flex;gap:22px;align-items:flex-start}
+.layer:last-child{border-bottom:0}
+.layer .ico{flex-shrink:0;width:70px;text-align:center;font-size:12px;font-weight:800;
+  letter-spacing:1px;color:var(--accent-dark);border:2px solid var(--accent);
+  background:var(--accent-soft);padding:12px 4px;line-height:1.4}
+.layer .body h4{margin:0 0 5px;font-size:21px;font-weight:800;letter-spacing:-.3px}
+.layer .body p{margin:3px 0;font-size:17px;color:var(--ink-2);line-height:1.7}
+@media (max-width:640px){.layer{flex-direction:column;gap:12px}.layer .ico{width:auto;align-self:flex-start;padding:9px 16px}}
+
+/* 강의 지도 */
+.map{border:1px solid var(--line);margin:22px 0}
+.mrow{display:flex;gap:20px;padding:20px 24px;border-bottom:1px solid var(--line);align-items:flex-start;
+  text-decoration:none;color:inherit;transition:background .15s}
+.mrow:last-child{border-bottom:0}
+.mrow:hover{background:var(--bg-soft)}
+.mrow .num{flex-shrink:0;font-size:13px;font-weight:800;letter-spacing:1px;color:var(--accent-dark);
+  min-width:52px;padding-top:4px}
+.mrow .t{font-size:20px;font-weight:800;letter-spacing:-.3px;margin:0 0 4px}
+.mrow .d{font-size:16px;color:var(--ink-3);line-height:1.65;margin:0}
+.mrow.goal{background:var(--gold-soft)}
+.mrow.goal .num{color:var(--gold)}
+
+/* 페이지 이동 */
+.nav{display:flex;gap:12px;justify-content:space-between;padding:44px 0 0;border-top:1px solid var(--line);margin-top:24px}
+.nav a{flex:1;text-decoration:none;border:2px solid var(--ink);padding:18px 22px;
+  font-weight:800;font-size:17px;box-shadow:4px 4px 0 var(--ink);background:#fff}
+.nav a:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink);background:var(--accent-soft)}
+.nav a.next{text-align:right}
+.nav a .lbl{display:block;font-size:11px;font-weight:800;letter-spacing:2px;color:var(--ink-3);margin-bottom:4px}
+@media (max-width:640px){.nav{flex-direction:column}.nav a.next{text-align:left}}
+
+.footer{padding:48px 0 68px;border-top:1px solid var(--line);color:var(--ink-3);
+  font-size:13px;letter-spacing:1px;text-align:center}
+.footer .line{font-weight:800;color:var(--ink);letter-spacing:2px;margin-bottom:8px;font-size:14px}

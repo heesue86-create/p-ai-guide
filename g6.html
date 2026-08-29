@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>6강 · 도착점</title>
+<link rel="stylesheet" href="./guide.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="container topbar-inner">
+    <div class="brand"><span class="dot"></span>6강</div>
+    <a class="back" href="./start.html">← 전체 지도</a>
+  </div>
+</header>
+<section class="hero">
+  <div class="container">
+    <div class="kicker">6강 · 도착점</div>
+    <h1>여기가<br><em>논문</em>입니다</h1>
+    <p class="lead">앞의 다섯 강이 전부 이 문서 한 장을 위한 준비였습니다.<br>
+    <b>급하시면 이 장만 보셔도 됩니다.</b></p>
+  </div>
+</section>
+<div class="container">
+
+  <section class="block">
+    <div class="tag">1 · 지금 방식</div>
+    <h2>보통은<br>이렇게 씁니다</h2>
+    <ul>
+      <li>통계 프로그램에서 분석 → 결과 화면을 봄</li>
+      <li>한글 문서를 열고 → <b>숫자를 손으로 옮겨 적음</b></li>
+      <li>그래프는 캡처해서 → 붙여넣음</li>
+    </ul>
+    <p>여기서 사고가 납니다.</p>
+    <div class="redbox">
+      <div class="c-label">흔한 일</div>
+      <h3>자료가 하나 바뀌면 전부 다시</h3>
+      <p>데이터를 한 건 고치면 <b>표의 모든 숫자가 바뀝니다.</b>
+      다시 돌리고, 다시 옮겨 적고, 그래프도 다시 캡처하고.</p>
+      <p>그러다 <b>어딘가 한 칸은 옛날 숫자로 남습니다.</b> 본문에는 새 숫자, 표에는 옛 숫자.
+      심사에서 이게 잡히면 곤란해집니다.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="tag">2 · Quarto</div>
+    <h2>글과 계산이<br>한 파일에</h2>
+    <p>Quarto는 <b>문서 안에 계산을 넣어두는</b> 방식입니다.</p>
+    <div class="stack">
+      <div class="layer">
+        <div class="ico">글</div>
+        <div class="body">
+          <h4>그냥 글로 씁니다</h4>
+          <p>“본 연구는 서울시 아파트 가격에 영향을 미치는 요인을…” 평소처럼 쓰시면 됩니다.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="ico">계산</div>
+        <div class="body">
+          <h4>중간중간 계산을 끼워둡니다</h4>
+          <p>“여기에 회귀분석 표” 자리에 <b>계산하는 줄</b>을 넣어둡니다.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="ico">완성</div>
+        <div class="body">
+          <h4>버튼 하나 누르면</h4>
+          <p>계산이 <b>그 자리에서 돌아가서</b> 표와 그래프가 박힌 문서가 나옵니다.</p>
+          <p>HTML·PDF·워드 중에 골라서요.</p>
+        </div>
+      </div>
+    </div>
+    <div class="goldbox">
+      <div class="c-label">달라지는 것</div>
+      <h3>숫자를 손으로 옮기는 일이 사라집니다</h3>
+      <p>자료가 바뀌면 <b>버튼만 다시 누르면</b> 표·그래프·본문 숫자가 한꺼번에 갱신됩니다.</p>
+      <p>옮겨 적다 생기는 실수가 <b>구조적으로 불가능</b>해집니다. 옮겨 적지를 않으니까요.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="tag">3 · 마크다운</div>
+    <h2>글 쓰는 규칙은<br>다섯 개뿐</h2>
+    <p>Quarto 문서는 <b>마크다운</b>이라는 아주 단순한 규칙으로 씁니다.
+    한글의 서식 메뉴 대신 <b>기호 몇 개</b>를 쓰는 겁니다.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>쓰고 싶은 것</th><th>이렇게</th></tr>
+      <tr><td>큰 제목</td><td><code># 서론</code></td></tr>
+      <tr><td>작은 제목</td><td><code>## 연구 배경</code></td></tr>
+      <tr><td>굵게</td><td><code>**중요**</code></td></tr>
+      <tr><td>목록</td><td><code>- 첫째</code></td></tr>
+      <tr><td>표</td><td>세로선 <code>|</code> 으로 칸을 나눔</td></tr>
+    </table>
+    </div>
+    <p>이게 전부입니다. <b>외울 게 다섯 개</b>고, 그마저도 AI에게 “표로 만들어주세요” 하면 됩니다.</p>
+  </section>
+
+  <section class="block">
+    <div class="tag">4 · 왜 마지막인가</div>
+    <h2>순서가<br>거꾸로 느껴지는 이유</h2>
+    <p>강의는 <b>도구 → 기법 → 자료 → 문서</b> 순입니다. 만드는 사람 입장에서는 맞는 순서예요.
+    재료를 알아야 요리를 하니까요.</p>
+    <p>그런데 <b>배우는 사람에게는 거꾸로</b>입니다. 완성된 요리를 못 본 채 재료 손질부터 배우는 셈이죠.
+    “이걸 왜 배우지”가 계속 남는 게 당연합니다.</p>
+    <div class="calm">
+      <div class="c-label">그래서</div>
+      <h3>이 장을 먼저 보시는 게 낫습니다</h3>
+      <p>도착점을 알고 나면 앞의 강의가 <b>“아, 그걸 위한 거였구나”</b>로 바뀝니다.</p>
+      <p>1강은 왜 AI를 쓰는지, 3강은 어디에 쓰는지, 4강은 표에 뭘 넣을지,
+      5강은 그 표의 재료를 어디서 구할지 — <b>전부 이 문서 한 장으로 모입니다.</b></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="tag">5 · 정리</div>
+    <h2>전체를<br>한 줄로</h2>
+    <div class="stack">
+      <div class="layer">
+        <div class="ico">1·2강</div>
+        <div class="body"><h4>AI를 데리고 일한다</h4><p>외우지 않고 시키고 확인한다</p></div>
+      </div>
+      <div class="layer">
+        <div class="ico">3강</div>
+        <div class="body"><h4>작업대를 연다</h4><p>Positron · Console · 터미널</p></div>
+      </div>
+      <div class="layer">
+        <div class="ico">4강</div>
+        <div class="body"><h4>알던 통계를 R로 시킨다</h4><p>상관 · 회귀 · p값과 계수</p></div>
+      </div>
+      <div class="layer">
+        <div class="ico">5강</div>
+        <div class="body"><h4>진짜 자료를 가져온다</h4><p>공공데이터 · API · 주소 맞추기</p></div>
+      </div>
+      <div class="layer">
+        <div class="ico">6강</div>
+        <div class="body"><h4>문서 한 장으로 묶는다</h4><p><b>= 논문</b></p></div>
+      </div>
+    </div>
+    <p>여섯 강이 <b>여섯 개의 다른 것</b>이 아니라 <b>한 줄</b>입니다.
+    지금 어디쯤인지만 알면 길을 잃지 않습니다.</p>
+  </section>
+
+  <div class="nav">
+    <a href="./g5.html"><span class="lbl">이전</span>← 5강 · 데이터 가져오기</a>
+    <a class="next" href="./start.html"><span class="lbl">처음으로</span>전체 지도 →</a>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <div class="line">R GUIDE</div>
+    <div>개인용 · 검색 노출 없음</div>
+  </div>
+</footer>
+</body>
+</html>

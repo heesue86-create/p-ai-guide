@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>4강 · 통계</title>
+<link rel="stylesheet" href="./guide.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="container topbar-inner">
+    <div class="brand"><span class="dot"></span>4강</div>
+    <a class="back" href="./start.html">← 전체 지도</a>
+  </div>
+</header>
+<section class="hero">
+  <div class="container">
+    <div class="kicker">4강</div>
+    <h1>통계는<br><em>이미</em> 아십니다</h1>
+    <p class="lead">배우는 건 통계가 아니라<br>
+    <b>“같은 걸 R로 어떻게 시키나”</b>입니다.</p>
+  </div>
+</section>
+<div class="container">
+
+  <section class="block">
+    <div class="tag">1 · 대응표</div>
+    <h2>하던 것과<br>같은 것</h2>
+    <p>통계 프로그램에서 메뉴로 고르던 것들이 R에서는 <b>줄 하나</b>가 됩니다.
+    이름만 바뀔 뿐 <b>하는 일도, 나오는 숫자도 같습니다.</b></p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>하던 것</th><th>R에서 부르는 이름</th><th>무엇을 보는가</th></tr>
+      <tr><td>평균·표준편차</td><td>기술통계</td><td>이 자료가 대충 어떻게 생겼나</td></tr>
+      <tr><td>히스토그램·산점도</td><td>시각화</td><td><b>눈으로 먼저 보기</b> — 숫자보다 이게 먼저</td></tr>
+      <tr><td>상관분석</td><td>상관</td><td>둘이 <b>같이 움직이나</b></td></tr>
+      <tr><td>회귀분석</td><td>회귀</td><td>하나가 오르면 다른 게 <b>얼마나</b> 오르나</td></tr>
+      <tr><td>요인분석</td><td>주성분·요인</td><td>변수가 너무 많을 때 <b>묶어서 줄이기</b></td></tr>
+    </table>
+    </div>
+    <div class="calm">
+      <div class="c-label">안심</div>
+      <h3>새로 배우는 통계는 없습니다</h3>
+      <p>어려운 건 통계가 아니라 <b>“그걸 어떻게 적어서 시키냐”</b>입니다.
+      그리고 그건 <b>AI에게 물어보면 됩니다.</b></p>
+      <p>“이 자료로 회귀분석 하고 싶은데 어떻게 쓰나요” 라고 물으면 줄을 줍니다.
+      <b>판단은 팀장님이, 타이핑은 AI가.</b></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="tag">2 · 두 기둥</div>
+    <h2>상관과 회귀,<br>뭐가 다른가</h2>
+    <h3>상관 — 같이 움직이나</h3>
+    <p>“면적이 큰 집은 값도 비싼가?” — <b>둘이 나란히 움직이는지</b>만 봅니다.
+    -1에서 1 사이 숫자가 나오고, <b>0에 가까우면 상관없고 1에 가까우면 같이 움직입니다.</b></p>
+    <p>⚠️ 상관이 높다고 <b>원인은 아닙니다.</b> 아이스크림과 익사 사고는 같이 늘지만, 원인은 둘 다 여름이죠.</p>
+    <h3>회귀 — 얼마나 밀어올리나</h3>
+    <p>“면적이 1평 늘면 값이 <b>얼마</b> 오르나?” — <b>크기를 숫자로</b> 답합니다.</p>
+    <p>논문에서 주로 쓰는 게 이쪽입니다. <b>“무엇이 값을 얼마나 움직이는가”</b>가 대개 연구 질문이니까요.</p>
+  </section>
+
+  <section class="block">
+    <div class="tag">3 · 결과 읽기</div>
+    <h2>숫자가 잔뜩 나오는데<br>어디를 보나</h2>
+    <p>회귀분석을 돌리면 표가 여러 줄 나옵니다. <b>실제로 논문에 쓰는 건 셋</b>입니다.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>이름</th><th>무슨 뜻</th><th>어떻게 읽나</th></tr>
+      <tr><td><b>계수</b><br>(Estimate)</td><td>하나 늘면 얼마 변하나</td><td><b>+면 오르고 −면 내림.</b> 숫자가 클수록 영향이 큼</td></tr>
+      <tr><td><b>p값</b><br>(p-value)</td><td>우연일 가능성</td><td><b>0.05보다 작으면</b> “우연 아님”으로 봅니다</td></tr>
+      <tr><td><b>R²</b><br>(설명력)</td><td>이 모형이 얼마나 설명하나</td><td>0~1. <b>0.3이면 30% 설명</b>. 사회과학은 이 정도도 씁니다</td></tr>
+    </table>
+    </div>
+    <div class="goldbox">
+      <div class="c-label">읽는 순서</div>
+      <h3>p값 먼저, 그다음 계수</h3>
+      <p><b>1.</b> p값이 0.05보다 작은가 → 아니면 그 변수는 얘기할 게 없습니다</p>
+      <p><b>2.</b> 계수가 +인가 −인가 → 방향을 봅니다</p>
+      <p><b>3.</b> 숫자가 얼마인가 → 크기를 봅니다</p>
+      <p>표를 통째로 AI에게 붙여넣고 <b>“어느 변수가 의미 있고 무슨 뜻인지 쉽게 알려주세요”</b>라고 하면 이 순서로 읽어줍니다.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="tag">4 · 변수 묶기</div>
+    <h2>변수가 너무 많을 때</h2>
+    <p>부동산 자료는 변수가 금방 수십 개가 됩니다. 면적·층수·연식·역거리·학군·세대수…</p>
+    <p>그런데 이것들이 <b>서로 얽혀 있으면</b> 회귀 결과가 이상해집니다.
+    “면적도 중요하고 방 개수도 중요한데, 둘이 사실 같은 얘기”인 상황이요.</p>
+    <p>그때 <b>비슷한 것끼리 묶어서 몇 개로 줄이는</b> 게 주성분·요인 분석입니다.
+    예를 들어 인구밀도·소득·상업시설을 묶어 <b>“도시화 정도”</b> 하나로 만드는 식이죠.</p>
+    <div class="calm">
+      <div class="c-label">언제 쓰나</div>
+      <h3>처음부터 할 필요는 없습니다</h3>
+      <p>변수 몇 개로 회귀부터 돌려보고, <b>결과가 이상할 때</b> 꺼내는 도구입니다.</p>
+      <p>논문 심사에서 “왜 묶었나”를 물으므로, <b>묶은 이유를 말할 수 있을 때만</b> 쓰세요.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="tag">5 · 순서</div>
+    <h2>실제 분석 순서</h2>
+    <ul>
+      <li><b>1. 눈으로 보기</b> — 그래프부터. 이상한 값이 여기서 잡힙니다</li>
+      <li><b>2. 기술통계</b> — 평균·최대·최소. 자료 생김새 파악</li>
+      <li><b>3. 상관</b> — 뭐가 뭐랑 얽혀 있나 훑기</li>
+      <li><b>4. 회귀</b> — 본 분석</li>
+      <li><b>5. 해석</b> — p값 → 방향 → 크기</li>
+    </ul>
+    <p>이 순서를 건너뛰고 바로 회귀로 가면, <b>이상한 값 하나 때문에 결과가 통째로 틀어져도 모릅니다.</b></p>
+  </section>
+
+  <div class="nav">
+    <a href="./g3.html"><span class="lbl">이전</span>← 3강 · 화면과 터미널</a>
+    <a class="next" href="./g5.html"><span class="lbl">다음</span>5강 · 데이터 가져오기 →</a>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <div class="line">R GUIDE</div>
+    <div>개인용 · 검색 노출 없음</div>
+  </div>
+</footer>
+</body>
+</html>
