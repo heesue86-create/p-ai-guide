@@ -114,7 +114,12 @@ $apps = @(
   @{ id='Git.Git';           label='Git';        cmd='git';  globs=@("$pf\Git\cmd\git.exe"); must=$true },
   @{ id='GitHub.cli';        label='GitHub CLI'; cmd='gh';   globs=@("$pf\GitHub CLI\gh.exe"); must=$true },
   @{ id='RProject.R';        label='R';          cmd=$null;  globs=@("$pf\R\R-*\bin\R.exe"); must=$true },
-  @{ id='Posit.RStudio';     label='RStudio';    cmd=$null;  globs=@("$pf\RStudio\rstudio.exe","$pf86\RStudio\rstudio.exe"); must=$true },
+  # RStudio 2022+ 는 실행 파일이 RStudio\bin\ 아래로 옮겨졌다.
+  # 8/29 실측: 옛 경로만 보다가 winget 이 코드 0(성공)을 줬는데도 '실패' 로 찍혔다.
+  @{ id='Posit.RStudio';     label='RStudio';    cmd=$null;  globs=@(
+       "$pf\RStudio\bin\rstudio.exe","$pf\RStudio\rstudio.exe",
+       "$pf86\RStudio\bin\rstudio.exe","$pf86\RStudio\rstudio.exe",
+       "$env:LOCALAPPDATA\Programs\RStudio\bin\rstudio.exe"); must=$true },
   @{ id='OpenJS.NodeJS.LTS'; label='Node.js';    cmd='node'; globs=@("$pf\nodejs\node.exe"); must=$true },
   # Rtools 는 소스 패키지를 직접 컴파일할 때만 필요하다.
   # 강의에서 쓰는 패키지는 대개 CRAN 이 미리 만들어 둔 것으로 충분하므로 실패해도 진행한다.
@@ -128,6 +133,11 @@ foreach ($a in $apps) {
   Sync-Path
   if (Test-Installed $a.cmd $a.globs) {
     Log $a.label '설치됨' $a.id
+  } elseif ($code -eq 0) {
+    # winget 이 성공(0)을 리턴했으면 설치는 된 것이다.
+    # 못 찾은 건 이 스크립트의 경로 목록이 낡았다는 뜻이지 설치 실패가 아니다.
+    # '실패' 로 찍으면 사람이 멀쩡한 걸 다시 깔러 간다 (8/29 실측 오판).
+    Log $a.label '설치됨(경로 미확인)' "winget 성공 · 확인 경로 갱신 필요"
   } elseif ($a.must) {
     Log $a.label '실패' "winget $($a.id) -> 코드 $code"
     Write-Host "    실패 (나중에 수동 설치)" -ForegroundColor Yellow
@@ -256,6 +266,8 @@ foreach ($c in 'git','gh','node','npm','claude') {
 }
 $rexe = Get-Item "$pf\R\R-*\bin\R.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
 Write-Host ("  {0,-8} {1}" -f 'R', $(if ($rexe) { $rexe.FullName } else { '없음' }))
+$rs = Get-ChildItem "$pf\RStudio" -Recurse -Filter rstudio.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+Write-Host ("  {0,-8} {1}" -f 'RStudio', $(if ($rs) { $rs.FullName } else { '없음' }))
 
 # 계정 정합 - 설치 위치와 실행 계정이 갈리면 자동 백업이 조용히 죽는다
 $pathUser = if ($root -match '(?i)^[A-Z]:\\Users\\([^\\]+)') { $Matches[1] } else { $null }
