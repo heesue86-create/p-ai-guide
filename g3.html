@@ -122,6 +122,43 @@
     <p>Positron은 <b>마지막에 연 폴더를 기억합니다.</b> 한 번 제대로 열어두면 다음부터는 그냥 켜기만 하면 됩니다.</p>
   </section>
 
+  <section class="block">
+    <div class="tag">5 · 직접 해보기</div>
+    <h2>Console에<br>세 줄만</h2>
+    <p>읽지 말고 <b>진짜로 쳐보세요.</b> 아래 칸(Console)에 붙여넣고 엔터입니다.</p>
+
+    <div class="try">
+      <div class="try-head"><span class="lbl">① 계산기처럼</span><button class="copy-btn">복사</button></div>
+      <pre>1 + 1</pre>
+      <div class="out"><span class="cap">이렇게 나와요</span>[1] 2</div>
+    </div>
+    <p>앞의 <code>[1]</code> 은 “첫 번째 답”이라는 표시입니다. <b>무시하셔도 됩니다.</b></p>
+
+    <div class="try">
+      <div class="try-head"><span class="lbl">② 평균 내기</span><button class="copy-btn">복사</button></div>
+      <pre>mean(c(3, 5, 10))</pre>
+      <div class="out"><span class="cap">이렇게 나와요</span>[1] 6</div>
+    </div>
+    <p><code>mean</code> 은 평균, <code>c(...)</code> 는 “숫자들을 묶어라”. <b>논문에서 평균 낼 때 쓰는 게 딱 이겁니다.</b></p>
+
+    <div class="try">
+      <div class="try-head"><span class="lbl">③ 이름 붙여두기</span><button class="copy-btn">복사</button></div>
+      <pre>가격 &lt;- 500
+가격 * 3</pre>
+      <div class="out"><span class="cap">이렇게 나와요</span>(첫 줄은 아무것도 안 나옴)
+[1] 1500</div>
+    </div>
+    <p><code>&lt;-</code> 는 <b>“이 이름으로 저장해둬”</b>입니다. 화살표처럼 생겼죠.</p>
+    <p><b>첫 줄에서 아무것도 안 나오는 게 정상입니다.</b> 대신 <b>오른쪽 칸</b>을 보세요 —
+    <code>가격</code> 이 생겨 있으면 저장된 겁니다.</p>
+
+    <div class="calm">
+      <div class="c-label">여기까지 하셨으면</div>
+      <h3>R을 쓰신 겁니다</h3>
+      <p>계산하고, 저장하고, 확인했습니다. <b>나머지는 이것의 반복</b>이에요.</p>
+    </div>
+  </section>
+
   <div class="nav">
     <a href="./g2.html"><span class="lbl">이전</span>← 2강 · 바이브 코딩</a>
     <a class="next" href="./g4.html"><span class="lbl">다음</span>4강 · 통계 →</a>
@@ -133,5 +170,6 @@
     <div>개인용 · 검색 노출 없음</div>
   </div>
 </footer>
+<script src="./guide.js"></script>
 </body>
 </html>

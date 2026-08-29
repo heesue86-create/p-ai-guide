@@ -112,6 +112,59 @@
     <p>이 순서를 건너뛰고 바로 회귀로 가면, <b>이상한 값 하나 때문에 결과가 통째로 틀어져도 모릅니다.</b></p>
   </section>
 
+  <section class="block">
+    <div class="tag">6 · 직접 해보기</div>
+    <h2>연습용 자료로<br>회귀까지</h2>
+    <p>R에는 <b>연습용 자료가 들어 있습니다.</b> 자동차 32대의 연비·무게·마력 자료예요.
+    받을 것도, 깔 것도 없습니다. <b>강의에서 교수님이 쓰신 것과 같은 자료</b>입니다.</p>
+
+    <div class="try">
+      <div class="try-head"><span class="lbl">① 자료 훑어보기</span><button class="copy-btn">복사</button></div>
+      <pre>head(mtcars)
+summary(mtcars$mpg)</pre>
+      <div class="out"><span class="cap">이렇게 나와요</span>맨 위 6줄과, 연비(mpg)의 최소·평균·최대</div>
+    </div>
+    <p><code>$</code> 는 <b>“그 자료 안의 이 항목”</b>입니다. <code>mtcars$mpg</code> = mtcars 안의 연비.</p>
+
+    <div class="try">
+      <div class="try-head"><span class="lbl">② 상관 — 같이 움직이나</span><button class="copy-btn">복사</button></div>
+      <pre>cor(mtcars$mpg, mtcars$wt)</pre>
+      <div class="out"><span class="cap">이렇게 나와요</span>[1] -0.8676594</div>
+    </div>
+    <p><b>−0.87.</b> 마이너스니까 <b>반대로</b> 움직이고, 0.87이면 <b>아주 강하게</b>입니다.
+    무거운 차일수록 연비가 나쁘다 — 상식과 맞죠. <b>상식과 맞는지 보는 게 첫 검산</b>입니다.</p>
+
+    <div class="try">
+      <div class="try-head"><span class="lbl">③ 회귀 — 얼마나 밀어내리나</span><button class="copy-btn">복사</button></div>
+      <pre>모형 &lt;- lm(mpg ~ wt, data = mtcars)
+summary(모형)</pre>
+      <div class="out"><span class="cap">여기를 보세요</span>Estimate (wt 줄)   -5.34   ← 계수
+Pr(&gt;|t|)           1.29e-10 ← p값
+Multiple R-squared  0.7528  ← 설명력</div>
+    </div>
+    <p><code>mpg ~ wt</code> 는 <b>“연비를 무게로 설명해봐”</b>라는 뜻입니다. 물결표가 “~로 설명”이에요.</p>
+    <p>읽으면 — <b>무게가 1 늘면 연비가 5.34 떨어지고</b>(계수),
+    <b>우연이 아니고</b>(p값이 0.05보다 훨씬 작음), <b>이 모형이 75% 설명한다</b>(R²)는 뜻입니다.</p>
+
+    <div class="try">
+      <div class="try-head"><span class="lbl">④ 그림으로 확인</span><button class="copy-btn">복사</button></div>
+      <pre>library(ggplot2)
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  geom_smooth(method = "lm")</pre>
+      <div class="out"><span class="cap">이렇게 나와요</span>오른쪽 칸에 점 그래프 + 우하향 직선</div>
+    </div>
+    <p>그 직선이 방금 구한 회귀선입니다. <b>숫자로 본 걸 눈으로 확인</b>하는 거예요.</p>
+
+    <div class="goldbox">
+      <div class="c-label">논문에서는</div>
+      <h3>자료 이름만 바꾸면 그대로입니다</h3>
+      <p><code>mtcars</code> 자리에 아파트 자료를, <code>mpg</code> 자리에 가격을,
+      <code>wt</code> 자리에 면적을 넣으면 <b>똑같이 돌아갑니다.</b></p>
+      <p>연습을 자동차로 하는 이유가 그거예요 — <b>틀에 익숙해지면 자료만 갈아끼우면</b> 됩니다.</p>
+    </div>
+  </section>
+
   <div class="nav">
     <a href="./g3.html"><span class="lbl">이전</span>← 3강 · 화면과 터미널</a>
     <a class="next" href="./g5.html"><span class="lbl">다음</span>5강 · 데이터 가져오기 →</a>
@@ -123,5 +176,6 @@
     <div>개인용 · 검색 노출 없음</div>
   </div>
 </footer>
+<script src="./guide.js"></script>
 </body>
 </html>

@@ -120,6 +120,61 @@
     </div>
   </section>
 
+  <section class="block">
+    <div class="tag">6 · 직접 해보기</div>
+    <h2>주소가 왜 안 붙는지<br>눈으로 보기</h2>
+    <p>API 키가 없어도 됩니다. <b>작은 자료를 손으로 만들어</b> 그 상황을 재현해볼게요.</p>
+
+    <div class="try">
+      <div class="try-head"><span class="lbl">① 자료 두 개 만들기</span><button class="copy-btn">복사</button></div>
+      <pre>library(dplyr)
+
+거래 &lt;- data.frame(
+  주소 = c("서울시 강남구 대치동", "서울특별시 서초구 반포동"),
+  가격 = c(250000, 310000)
+)
+
+단지 &lt;- data.frame(
+  주소 = c("서울특별시 강남구 대치동", "서울특별시 서초구 반포동"),
+  층수 = c(15, 20)
+)</pre>
+      <div class="out"><span class="cap">차이가 보이시나요</span>첫 줄만 "서울시" vs "서울특별시"</div>
+    </div>
+
+    <div class="try">
+      <div class="try-head"><span class="lbl">② 합쳐보기</span><button class="copy-btn">복사</button></div>
+      <pre>left_join(거래, 단지, by = "주소")</pre>
+      <div class="out"><span class="cap">이렇게 나와요</span>서울시 강남구 대치동     250000   NA   ← 층수가 비었음
+서울특별시 서초구 반포동  310000   20</div>
+    </div>
+    <p><b>첫 줄 층수가 <code>NA</code>(비어 있음)입니다.</b> 사람 눈엔 같은 주소인데 컴퓨터는 남남으로 봤어요.
+    <b>이게 5강에서 계속 나오는 그 문제</b>입니다.</p>
+
+    <div class="try">
+      <div class="try-head"><span class="lbl">③ 주소 맞추고 다시</span><button class="copy-btn">복사</button></div>
+      <pre>거래$주소 &lt;- gsub("^서울시", "서울특별시", 거래$주소)
+left_join(거래, 단지, by = "주소")</pre>
+      <div class="out"><span class="cap">이제 붙습니다</span>서울특별시 강남구 대치동  250000   15
+서울특별시 서초구 반포동  310000   20</div>
+    </div>
+    <p><code>gsub</code> 은 <b>“이 글자를 저 글자로 바꿔라”</b>입니다. 워드의 찾아 바꾸기와 같아요.</p>
+
+    <div class="redbox">
+      <div class="c-label">꼭 확인</div>
+      <h3>합친 뒤 몇 건이 남았는지 세세요</h3>
+      <p>실제 자료는 수천 건이라 <b>NA가 생겨도 눈에 안 띕니다.</b> 조용히 반이 사라져도 모릅니다.</p>
+      <p>합친 다음 이 줄로 확인하세요.</p>
+    </div>
+
+    <div class="try">
+      <div class="try-head"><span class="lbl">④ 안 붙은 건 몇 개인가</span><button class="copy-btn">복사</button></div>
+      <pre>합친자료 &lt;- left_join(거래, 단지, by = "주소")
+sum(is.na(합친자료$층수))</pre>
+      <div class="out"><span class="cap">이렇게 나와요</span>[1] 0     ← 0이면 다 붙은 것</div>
+    </div>
+    <p>0이 아니면 그만큼 주소가 안 맞은 겁니다. <b>그 건들을 뽑아 AI에게 보여주면</b> 어떻게 다른지 짚어줍니다.</p>
+  </section>
+
   <div class="nav">
     <a href="./g4.html"><span class="lbl">이전</span>← 4강 · 통계</a>
     <a class="next" href="./g6.html"><span class="lbl">다음</span>6강 · 도착점 →</a>
@@ -131,5 +186,6 @@
     <div>개인용 · 검색 노출 없음</div>
   </div>
 </footer>
+<script src="./guide.js"></script>
 </body>
 </html>

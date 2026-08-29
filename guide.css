@@ -104,3 +104,21 @@ td{font-size:17px} td b{color:var(--ink);font-weight:800}
 .footer{padding:48px 0 68px;border-top:1px solid var(--line);color:var(--ink-3);
   font-size:13px;letter-spacing:1px;text-align:center}
 .footer .line{font-weight:800;color:var(--ink);letter-spacing:2px;margin-bottom:8px;font-size:14px}
+
+/* 직접 해보기 블록 */
+.try{border:1px solid var(--line);margin:20px 0 12px;background:#fff}
+.try-head{display:flex;justify-content:space-between;align-items:center;gap:14px;
+  padding:13px 20px;border-bottom:1px solid var(--line);background:var(--bg-soft)}
+.try-head .lbl{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--ink-3)}
+.copy-btn{background:var(--accent);color:#fff;border:0;font-size:13px;font-weight:800;
+  letter-spacing:1.5px;padding:9px 16px;cursor:pointer;font-family:inherit;flex-shrink:0}
+.copy-btn:hover{background:var(--accent-dark)}
+.copy-btn.ok{background:var(--ink)}
+.try pre{margin:0;padding:20px;white-space:pre-wrap;word-break:break-word;
+  font-family:"D2Coding","JetBrains Mono","Consolas",monospace;
+  font-size:16px;line-height:1.75;color:var(--ink)}
+.out{border-top:1px dashed var(--line);padding:14px 20px;background:var(--bg-soft);
+  font-family:"D2Coding","JetBrains Mono","Consolas",monospace;font-size:15px;color:var(--ink-2);
+  white-space:pre-wrap;line-height:1.7}
+.out .cap{font-family:inherit;font-size:12px;font-weight:800;letter-spacing:2px;
+  color:var(--ink-3);display:block;margin-bottom:6px}
