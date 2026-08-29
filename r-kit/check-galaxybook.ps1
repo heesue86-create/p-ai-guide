@@ -1,10 +1,7 @@
-﻿<#
-  ai_in_life - 갤럭시북 사전 진단
-  실행: PowerShell 에서 아래 한 줄
-    irm https://raw.githubusercontent.com/heesue86-create/p-ai-guide/main/r-kit/check-galaxybook.ps1 | iex
-
-  아무것도 설치하거나 바꾸지 않습니다. 확인만 하고 결과를 바탕화면에 파일로 남깁니다.
-#>
+# ai_in_life - 갤럭시북 사전 진단
+# 실행: irm https://raw.githubusercontent.com/heesue86-create/p-ai-guide/main/r-kit/check-galaxybook.ps1 | iex
+# 아무것도 설치하거나 바꾸지 않습니다. 확인만 하고 결과를 바탕화면에 파일로 남깁니다.
+# 주의: 이 파일은 irm|iex 로 실행되므로 UTF-8 BOM 을 넣지 않는다 (BOM = 파싱 파괴)
 
 $ErrorActionPreference = 'Continue'
 $rows = [System.Collections.ArrayList]::new()
