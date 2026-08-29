@@ -44,10 +44,17 @@ if ($made) { schtasks /delete /TN $probe /F 2>&1 | Out-Null }
 Add-Row "★ 스케줄러 등록" $(if ($made) { "가능 (관리자 없이 OK)" } else { "실패 - " + ($mk | Select-Object -First 1) })
 
 # 6. 이미 깔려 있는 것 ------------------------------------------
-foreach ($c in 'git','gh','node','npm','R','Rscript','claude') {
+foreach ($c in 'git','gh','node','npm','Rscript','claude') {
   $p = (Get-Command $c -ErrorAction SilentlyContinue)
-  Add-Row "설치: $c" $(if ($p) { $p.Source } else { "없음" })
+  $where = if ($p) { if ($p.Source) { $p.Source } else { $p.Name + " (경로 미상)" } } else { "없음" }
+  Add-Row "설치: $c" $where
 }
+# R 은 PATH 에 안 잡히는 설치가 흔해 실제 경로로 확인한다
+$rPath = @("$env:ProgramFiles\R", "${env:ProgramFiles(x86)}\R") |
+         Where-Object { $_ -and (Test-Path $_) } |
+         ForEach-Object { Get-ChildItem $_ -Directory -ErrorAction SilentlyContinue } |
+         Select-Object -First 1
+Add-Row "설치: R" $(if ($rPath) { $rPath.FullName } else { "없음" })
 $rstudio = @(
   "$env:ProgramFiles\RStudio\rstudio.exe",
   "$env:LOCALAPPDATA\Programs\RStudio\rstudio.exe"
@@ -64,11 +71,11 @@ $sysDrive = (Get-PSDrive -Name ($env:SystemDrive.TrimEnd(':')) -ErrorAction Sile
 if ($sysDrive) { Add-Row "여유 공간" ("{0:N1} GB" -f ($sysDrive.Free / 1GB)) }
 
 # 결과 ---------------------------------------------------------
-$rows | Format-Table -AutoSize
+$rows | Format-List
 
 $outFile = Join-Path ([Environment]::GetFolderPath('Desktop')) "ai_in_life-진단결과.txt"
 $header  = "ai_in_life 사전 진단 / " + (Get-Date -Format "yyyy-MM-dd HH:mm") + " / " + $env:COMPUTERNAME
-$body    = $rows | Format-Table -AutoSize | Out-String
+$body    = $rows | Format-List | Out-String
 [System.IO.File]::WriteAllText($outFile, ($header + "`r`n`r`n" + $body),
   (New-Object System.Text.UTF8Encoding($false)))
 
