@@ -3,13 +3,25 @@
 부모님을 위한 AI 사용 설명서 — 개인용 랜딩 페이지.
 
 ## 구성
-- `index.html` — 단일 HTML 파일 (CSS/JS 인라인, 외부 의존성 0, 오프라인 동작)
+
+| 파일 | 내용 |
+|---|---|
+| `index.html` | 부모님 AI 사용 설명서 (단일 HTML, CSS/JS 인라인, 오프라인 동작) |
+| `start.html` | **부동산 AI 수업 가이드 — 전체 지도.** 도구 3층 · 6강 지도 · 준비물 |
+| `g1`~`g6.html` | 1~6강 개념 정리 (AI · 바이브 코딩 · 화면/터미널 · 통계 · 데이터 · Quarto) |
+| `git.html` | **부록 — 깃허브·자동 저장 개념.** 강의 밖 인프라 설명 |
+| `guide.css` · `guide.js` | 수업 가이드 8장 공용 스타일·복사 버튼 |
+| `r.html` | 구 가이드 (RStudio 전제). **폐기 — Positron 전환으로 대체됨** |
+| `r-kit/` | 운영자용 설치 스크립트·체크리스트 |
+
+동선: `start.html` → `g1` → … → `g6` → `git.html` → `start.html`
 
 ## 원칙
 - 본문 20pt+, 60대 가독성 우선
 - 순백 배경 + 펄 아쿠아 그린 단일 강조
 - 현대카드 미니멀 에디토리얼 톤
-- 검색엔진 비노출 (`noindex, nofollow`)
+- 검색엔진 비노출 (`noindex, nofollow`) · **개인 식별자(계정·리포명·URL) 본문 미기재**
+- 불안 유발 문구 배제 · 사전지식 전제 배제 (검정고시 출신 만학도 기준)
 
 ## 배포
-GitHub Pages via `main` branch root.
+GitHub Pages via `main` branch root. 푸시 후 1~2분이면 라이브 반영.
